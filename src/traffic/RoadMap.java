@@ -9,16 +9,6 @@ public class RoadMap {
 	private String[] roadMap;
 	private Stack<Character> inputStack;
 	
-	public RoadMap(String filename){
-		// filename is the name of the program file
-		inputStack = new Stack<Character>();
-		
-		// TODO: Split the file apart into lines
-		
-		// TODO: Search for cars and declare them as such
-		
-	}
-	
 	public RoadMap(String[] roadMap){
 		inputStack = new Stack<Character>();
 		this.roadMap = roadMap;

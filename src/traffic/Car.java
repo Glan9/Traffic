@@ -125,7 +125,6 @@ public class Car {
 			}
 			if (map.conditionalPath(x, y) != null && !newValueSet && operator != 0){
 				performOperation(tempValue, map.conditionalPath(x, y));
-				newValueSet = true;
 				collectingValue = false;
 			}
 		} else {
@@ -286,6 +285,7 @@ public class Car {
 			} else {
 				direction = conditional[1];
 			}
+			tempValue = 0;
 		} else {
 			value = newValue;
 		}

@@ -429,15 +429,30 @@ public class CarTests {
 		assertEquals(testCar.getTempValue(), 3);
 		testCar.handleSpace(testMap, cars);
 		assertEquals(testCar.getTempValue(), 33);
-		
+
 		// Case not on a number just after stepping on a number
 		testMap.setMap("###\n# #\n###");
 		testCar.setOperator('+');
 		testCar.setValue(3);
 		testCar.handleSpace(testMap, cars);
-		assertEquals(testCar.getValue(), 36);
+		assertEquals(testCar.getValue(), 36); 
 		assertEquals(testCar.getOperator(), 0);
 		assertEquals(testCar.getTempValue(), 0);
+		
+		// Case on a number with a conditional
+		testMap.setMap("#?#\n#3#\n#!#");
+		testCar.setOperator('=');
+		testCar.setTempValue(0);
+		testCar.setValue(3);
+		testCar.handleSpace(testMap, cars);
+		assertEquals(testCar.getTempValue(), 0);
+		assertEquals(testCar.getDirection(), "UP");
+		testCar.setOperator('=');
+		testCar.setTempValue(0);
+		testCar.setValue(4);
+		testCar.handleSpace(testMap, cars);
+		assertEquals(testCar.getTempValue(), 0);
+		assertEquals(testCar.getDirection(), "DOWN");
 		
 		// Case not on a number
 		testCar.setOperator('+');
