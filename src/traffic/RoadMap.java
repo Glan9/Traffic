@@ -1,6 +1,6 @@
 package traffic;
 
-import java.util.*;
+//import java.util.*;
 
 import exceptions.InvalidStreetExitException;
 

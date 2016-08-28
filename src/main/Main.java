@@ -15,11 +15,17 @@ public class Main {
 		RoadMap map;
 		ArrayList<Car> cars = new ArrayList<Car>();
 		
+		if (args.length == 0){
+			System.out.println("Traffic v1.0\n\n");
+			System.out.println("Specify a filename to run it!");
+			return;
+		}
+		
 		FileInputStream fin = null;
 		
 		// Open the file and read its contents
 		try {
-			fin = new FileInputStream("test.tfc");
+			fin = new FileInputStream(args[0]);
 			int c;
 			while ((c = fin.read()) != -1) {
 				mapString += (char)c;
@@ -69,7 +75,6 @@ public class Main {
 		}
 		
 		// Take input from the user
-		System.out.println("Program input: ");
 		Scanner scanner = new Scanner(System.in); 
 		String input = scanner.nextLine();
 		scanner.close();
@@ -77,17 +82,8 @@ public class Main {
 		// Initialize the map object
 		map = new RoadMap(mapArray, input);
 		
-		// Read file
-		// Split into lines
-		// Pad lines
-		// Read input
 		
-		// TODO: Main execution code goes here...
-		
-		// Make every car step (exit program if every car returned false)
-		// Make every car handle space (exit program if it returns 2)
-		// Repeat unless there are no cars on the map
-		
+		// Main execution
 		boolean programFinished = false;
 		while (!programFinished && cars.size() > 0){
 			
