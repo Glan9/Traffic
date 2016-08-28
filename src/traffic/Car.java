@@ -164,12 +164,12 @@ public class Car {
 		
 		// Input
 		if (currentSpace == 'I'){
-			if (getInput(map.getInputStack()) == false){
+			if (getInput(map) == false){
 				return 1;
 			}
 		}
 		if (currentSpace == 'D'){
-			if (getIntegerInput(map.getInputStack()) == false){
+			if (getIntegerInput(map) == false){
 				return 1;
 			}
 		}
@@ -201,52 +201,34 @@ public class Car {
 		return 0;
 	}
 	
-	public boolean getIntegerInput(Stack<Character> inputStack){
+	public boolean getIntegerInput(RoadMap map){
 		// Get the next input
 		// Return false if there was no integer left in the input to retrieve
 
-		char topElement;
-		boolean inInt = false;
-		boolean isNegative = false;
-		int newValue = 0;
+		if (map.getInput().length() == 0) return false; // if there's nothing left in the input
 		
-		while (!inputStack.isEmpty()){			
-			topElement = inputStack.pop();
-			
-			if (topElement >= '0' && topElement <= '9'){
-				// If a digit was taken, append it to the new value
-				if (!inInt) inInt = true;
-				newValue = (newValue*10) + (int)(topElement-48);
-			} else if (topElement == '-' && !isNegative){
-				isNegative = true;
-			} else {
-				// If a non-digit was taken
-				if (inInt){
-					// If it was already taking a number, then put it back because it's done
-					inputStack.push(topElement);
-					this.value = (long)newValue;
-					return true;
-				}
-			}
-		}
-		
-		if (isNegative) newValue *= -1;
-		
-		if (inInt){
-			this.value = (long)newValue;
-			return true;
-		} else {
+		if (!(map.getInput().matches(".*\\d.*"))){
+			// If there are no digits in the input
+			map.setInput("");
 			return false;
+		} else {
+			value = Integer.parseInt(map.getInput().replaceAll("^.*?(\\-?\\d+).*$", "$1"));
+			map.setInput(map.getInput().replaceAll("^.*?\\-?\\d+", ""));
+			return true;
 		}
+		
 	}
 	
-	public boolean getInput(Stack<Character> inputStack){
+	public boolean getInput(RoadMap map){
 		// Get the next character input
 		// Return false if there was no input left
 		
-		if (inputStack.empty()) return false;
+		if (map.getInput().length() == 0) return false;
 		
-		value = (long)inputStack.pop();
+		char resultChar = map.getInput().charAt(0);
+		map.setInput(map.getInput().substring(1));
+		
+		value = (int)resultChar;
 		
 		return true;
 	}

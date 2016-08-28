@@ -123,100 +123,93 @@ public class CarTests {
 	
 	@Test
 	public void testGetInput(){
-		Stack<Character> inputStack = new Stack<Character>();
+		testMap = new RoadMap();
 		testCar = new Car(0, "", 0, 0);
 		
-		// Attempt with an empty stack.
+		// Attempt with an empty string.
 		// Should return false.
-		assertFalse(testCar.getInput(inputStack));
+		testMap.setInput("");
+		assertFalse(testCar.getInput(testMap));
 		assertEquals(testCar.getValue(), 0);
-		assertTrue(inputStack.isEmpty());
+		assertTrue(testMap.getInput().length() == 0);
 		
-		// Attempt with a stack one letter.
-		// Should gain the value 72, clear the stack, and return true.
-		inputStack.push('H');
-		assertTrue(testCar.getInput(inputStack));
+		// Attempt with a string one letter.
+		// Should gain the value 72, clear the string, and return true.
+		testMap.setInput("H");
+		assertTrue(testCar.getInput(testMap));
 		assertEquals(testCar.getValue(), 72);
-		assertTrue(inputStack.isEmpty());
+		assertTrue(testMap.getInput().length() == 0);
 		
-		// Attempt with a stack two letters.
-		// Should gain the value 72, leave 'G' as the top stack element, and return true.
-		inputStack.push('G');
-		inputStack.push('H');
-		assertTrue(testCar.getInput(inputStack));
+		// Attempt with a string two letters.
+		// Should gain the value 72, leave 'G' as the first character, and return true.
+		testMap.setInput("HG");
+		assertTrue(testCar.getInput(testMap));
 		assertEquals(testCar.getValue(), 72);
-		assertTrue(inputStack.peek() == 'G');
+		assertTrue(testMap.getInput().charAt(0) == 'G');
 		
 	}
 	
 	@Test
 	public void testGetIntegerInput(){
-		Stack<Character> inputStack = new Stack<Character>();
+		testMap = new RoadMap();
 		testCar = new Car(0, "", 0, 0);
 		
-		// Attempt with an empty stack.
+		// Attempt with an empty string.
 		// Should return false.
-		inputStack.clear();
-		assertFalse(testCar.getIntegerInput(inputStack));
+		testMap.setInput("");
+		assertFalse(testCar.getIntegerInput(testMap));
 		assertEquals(testCar.getValue(), 0);
-		assertTrue(inputStack.isEmpty());
+		assertTrue(testMap.getInput().length() == 0);
 		
-		// Attempt with a stack only containing letters.
-		// Should clear the stack and return false.
-		inputStack.clear();
-		inputStack.push('F');
-		assertFalse(testCar.getIntegerInput(inputStack));
+		// Attempt with a string only containing letters.
+		// Should clear the string and return false.
+		testMap.setInput("F");
+		assertFalse(testCar.getIntegerInput(testMap));
 		assertEquals(testCar.getValue(), 0);
-		assertTrue(inputStack.isEmpty());
+		assertTrue(testMap.getInput().length() == 0);
 		
-		// Attempt with a stack containing only numbers.
-		// Should gain the value 941, clear the stack, and return true.
-		inputStack.clear();
-		inputStack.push('1');
-		inputStack.push('4');
-		inputStack.push('9');
-		assertTrue(testCar.getIntegerInput(inputStack));
+		// Attempt with a string containing only numbers.
+		// Should gain the value 941, clear the string, and return true.
+		testMap.setInput("941");
+		assertTrue(testCar.getIntegerInput(testMap));
+		System.out.println(testCar.getValue());
 		assertEquals(testCar.getValue(), 941);
-		assertTrue(inputStack.isEmpty());
+		assertTrue(testMap.getInput().length() == 0);
 		
-		// Attempt with a stack containing a number following a letter.
-		// Should gain the value 941, clear the stack, and return true.
-		inputStack.clear();
-		inputStack.push('1');
-		inputStack.push('4');
-		inputStack.push('9');
-		inputStack.push('F');
-		assertTrue(testCar.getIntegerInput(inputStack));
+		// Attempt with a string containing a number following a letter.
+		// Should gain the value 941, clear the string, and return true.
+		testMap.setInput("F941");
+		assertTrue(testCar.getIntegerInput(testMap));
 		assertEquals(testCar.getValue(), 941);
-		assertTrue(inputStack.isEmpty());
+		assertTrue(testMap.getInput().length() == 0);
 		
-		// Attempt with a stack containing a letter following a number following a letter.
-		// Should gain the value 941, leave 'G' as the top stack element, and return true.
-		inputStack.clear();
-		inputStack.push('G');
-		inputStack.push('1');
-		inputStack.push('4');
-		inputStack.push('9');
-		inputStack.push('F');
-		assertTrue(testCar.getIntegerInput(inputStack));
+		// Attempt with a string containing a letter following a number following a letter.
+		// Should gain the value 941, leave 'G' as the first character, and return true.
+		testMap.setInput("F941G");
+		assertTrue(testCar.getIntegerInput(testMap));
 		assertEquals(testCar.getValue(), 941);
-		assertTrue(inputStack.peek() == 'G');
+		assertTrue(testMap.getInput().charAt(0) == 'G');
 		
-		// Attempt with a stack containing 2 numbers separated by letters.
-		// Should gain the value 941, leave 'G' as the top stack element, and return true.
-		inputStack.clear();
-		inputStack.push('H');
-		inputStack.push('5');
-		inputStack.push('6');
-		inputStack.push('7');
-		inputStack.push('G');
-		inputStack.push('1');
-		inputStack.push('4');
-		inputStack.push('9');
-		inputStack.push('F');
-		assertTrue(testCar.getIntegerInput(inputStack));
+		// Attempt with a string containing 2 numbers separated by letters.
+		// Should gain the value 941, leave 'G' as the first character, and return true.
+		testMap.setInput("F941G765H");
+		assertTrue(testCar.getIntegerInput(testMap));
 		assertEquals(testCar.getValue(), 941);
-		assertTrue(inputStack.peek() == 'G');
+		assertTrue(testMap.getInput().charAt(0) == 'G');
+		
+		// Attempt with a string containing a negative number.
+		// Should gain the value -941, leave 'G' as the first character, and return true.
+		testMap.setInput("-941G");
+		assertTrue(testCar.getIntegerInput(testMap));
+		assertEquals(testCar.getValue(), -941);
+		assertTrue(testMap.getInput().charAt(0) == 'G');
+		
+		// Attempt with a string containing a dash that's not adjacent to a number.
+		// Should gain the value 941, leave 'G' as the first character, and return true.
+		testMap.setInput("-H941G");
+		assertTrue(testCar.getIntegerInput(testMap));
+		assertEquals(testCar.getValue(), 941);
+		assertTrue(testMap.getInput().charAt(0) == 'G');
 		
 	}
 	
@@ -469,18 +462,14 @@ public class CarTests {
 		assertEquals(testMap.getMap()[1], "#R#");
 		
 		// Cases on an I
-		testMap.getInputStack().push('F');
+		testMap.setInput("F");
 		testMap.setMap("###\n#I#\n###");
 		testCar.handleSpace(testMap, cars);
 		assertEquals(testCar.getValue(), (long)'F');
 		assertEquals(testCar.handleSpace(testMap, cars), 1);
 		
 		// Cases on a D
-		testMap.getInputStack().push('T');
-		testMap.getInputStack().push('1');
-		testMap.getInputStack().push('4');
-		testMap.getInputStack().push('9');
-		testMap.getInputStack().push('F');
+		testMap.setInput("F941T");
 		testMap.setMap("###\n#D#\n###");
 		testCar.handleSpace(testMap, cars);
 		assertEquals(testCar.getValue(), 941);

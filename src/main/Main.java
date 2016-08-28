@@ -70,17 +70,17 @@ public class Main {
 		
 		// Take input from the user
 		System.out.println("Program input: ");
-		Scanner scanner = new Scanner(System. in); 
+		Scanner scanner = new Scanner(System.in); 
 		String input = scanner.nextLine();
 		
-		// Put the input into the input stack
+		/*// Put the input into the input stack
 		Stack<Character> inputStack = new Stack<Character>();
 		for (int i=input.length()-1; i>=0 ; i--){
 			inputStack.push(input.charAt(i));
-		}
+		}*/
 		
 		// Initialize the map object
-		map = new RoadMap(mapArray, inputStack);
+		map = new RoadMap(mapArray, input);
 		
 		// Read file
 		// Split into lines

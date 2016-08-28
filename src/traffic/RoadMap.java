@@ -7,17 +7,17 @@ public class RoadMap {
 	private int mapWidth;
 	private int mapHeight;
 	private String[] roadMap;
-	private Stack<Character> inputStack;
+	private String input;
 	
-	public RoadMap(String[] roadMap, Stack<Character> input){
-		inputStack = input;
+	public RoadMap(String[] roadMap, String input){
+		this.input = input;
 		this.roadMap = roadMap;
 		this.mapWidth = roadMap[0].length();
 		this.mapHeight = roadMap.length;
 	}
 	
 	public RoadMap(){
-		inputStack = new Stack<Character>();
+		//inputStack = new Stack<Character>();
 	}
 	
 	public void toggleLights(){
@@ -232,8 +232,8 @@ public class RoadMap {
 	public int height() { return mapHeight; }
 	
 
-	public Stack<Character> getInputStack() { return inputStack; }
-	public void setInputStack(Stack<Character> inputStack) { this.inputStack = inputStack; }
+	public String getInput() { return input; }
+	public void setInput(String input) { this.input = input; }
 
 	public String toString(){
 		String result = "";
