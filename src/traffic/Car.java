@@ -2,6 +2,8 @@ package traffic;
 
 import java.util.*;
 
+import exceptions.*;
+
 public class Car {
 	
 	private long value;
@@ -22,7 +24,7 @@ public class Car {
 		this.y = y;
 	}
 
-	public boolean step (RoadMap map){
+	public boolean step (RoadMap map) throws OffMapException{
 		// Given the map, advance the car one step.
 		// Return false if the car didn't move or something went wrong.
 		// Return true if the car moves.
@@ -32,17 +34,17 @@ public class Car {
 			if (map.spaceAhead(direction, x, y) == 'R'){
 				if (map.spaceRight(direction, x, y) != '#' && map.spaceRight(direction, x, y) != 'R'){
 					turnRight();
-					moveForward();
+					moveForward(map);
 					return true;
 				} else if (map.spaceLeft(direction, x, y) != '#' && map.spaceLeft(direction, x, y) != 'R'){
 					turnLeft();
-					moveForward();
+					moveForward(map);
 					return true;
 				} else {
 					return false;
 				}
 			} else {
-				moveForward();
+				moveForward(map);
 				return true;
 			}
 		}
@@ -52,14 +54,14 @@ public class Car {
 			if (map.spaceRight(direction, x, y) == 'R'){
 				if (map.spaceLeft(direction, x, y) != '#' && map.spaceLeft(direction, x, y) != 'R'){
 					turnLeft();
-					moveForward();
+					moveForward(map);
 					return true;
 				} else {
 					return false;
 				}
 			} else {
 				turnRight();
-				moveForward();
+				moveForward(map);
 				return true;
 			}
 		}
@@ -70,7 +72,7 @@ public class Car {
 				return false;
 			} else {
 				turnLeft();
-				moveForward();
+				moveForward(map);
 				return true;
 			}
 		}
@@ -81,7 +83,7 @@ public class Car {
 				return false;
 			} else {
 				turnAround();
-				moveForward();
+				moveForward(map);
 				return true;
 			}
 		}
@@ -89,9 +91,8 @@ public class Car {
 		return false;
 	}
 	
-	public int handleSpace(RoadMap map, ArrayList<Car> cars){
+	public int handleSpace(RoadMap map, ArrayList<Car> cars) throws InvalidStreetExitException{
 		// Process the character at the space the car is occupying.
-		// Return -1 if something went wrong.
 		// Return 0 if everything went OK.
 		// Return 1 if the car should be destroyed.
 		// Return 2 if the program should end.
@@ -233,7 +234,7 @@ public class Car {
 		return true;
 	}
 	
-	public void output(RoadMap map){
+	public void output(RoadMap map) throws InvalidStreetExitException{
 		// Handle doing output
 		
 		if (map.outputCharAt(direction, x, y) == 'C'){
@@ -310,7 +311,10 @@ public class Car {
 		}
 	}
 	
-	public void moveForward(){
+	public void moveForward(RoadMap map) throws OffMapException{
+		if (map.spaceAhead(direction, x, y) == 0){
+			throw new OffMapException("Car about to step off map at position "+x+", "+y);
+		}
 		switch (direction){
 		case "LEFT": x--; break;
 		case "RIGHT": x++; break;

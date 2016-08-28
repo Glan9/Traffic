@@ -19,7 +19,7 @@ public class Main {
 		
 		// Open the file and read its contents
 		try {
-			fin = new FileInputStream("prime.tfc");
+			fin = new FileInputStream("test.tfc");
 			int c;
 			while ((c = fin.read()) != -1) {
 				mapString += (char)c;
@@ -72,12 +72,7 @@ public class Main {
 		System.out.println("Program input: ");
 		Scanner scanner = new Scanner(System.in); 
 		String input = scanner.nextLine();
-		
-		/*// Put the input into the input stack
-		Stack<Character> inputStack = new Stack<Character>();
-		for (int i=input.length()-1; i>=0 ; i--){
-			inputStack.push(input.charAt(i));
-		}*/
+		scanner.close();
 		
 		// Initialize the map object
 		map = new RoadMap(mapArray, input);
@@ -94,7 +89,7 @@ public class Main {
 		// Repeat unless there are no cars on the map
 		
 		boolean programFinished = false;
-		while (!programFinished){
+		while (!programFinished && cars.size() > 0){
 			
 			// Keeps track of whether a car moved on this step. 
 			// If no cars move in a step, the program terminates.
@@ -102,19 +97,20 @@ public class Main {
 			
 			// Make every car step
 			for (Car car : cars){
-				carsMoved = car.step(map) || carsMoved; // Become true if the car moved. Never becomes false again.
+				boolean moved = car.step(map); // Become true if the car moved. Never becomes false again.
+				if (moved) carsMoved = true;
 			}
+			if (!carsMoved) programFinished = true;
+			
 			// Handle the space every car is on
-			for (Car car : cars){
+			for (int i=0; i<cars.size(); i++){
 				//System.out.println(car.getX()+", "+car.getY());
-				int result = car.handleSpace(map, cars);
-				if (result == -1){
-					throw new Exception("Something went wrong");
-				} else if (result == 1){
-					cars.remove(car);
-					if (cars.size() == 0){
+				int result = cars.get(i).handleSpace(map, cars);
+				if (result == 1){
+					cars.remove(cars.get(i--));
+					/*if (cars.size() == 0){
 						programFinished = true;
-					}
+					}*/
 				} else if (result == 2){
 					programFinished = true;
 				}

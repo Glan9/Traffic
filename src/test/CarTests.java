@@ -11,6 +11,8 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TestName;
 
+import exceptions.InvalidStreetExitException;
+import exceptions.OffMapException;
 import traffic.*;
 
 public class CarTests {
@@ -99,24 +101,36 @@ public class CarTests {
 	}
 
 	@Test
-	public void testMoveForward(){
+	public void testMoveForward() throws OffMapException{
+		testMap = new RoadMap();
 		testCar = new Car(0, "", 1, 1);
 		
+		testMap.setMap("  \n  ");
+		
 		testCar.setDirection("LEFT");
-		testCar.moveForward();
+		testCar.moveForward(testMap);
 		assertEquals(testCar.getX(), 0);
 		
 		testCar.setDirection("RIGHT");
-		testCar.moveForward();
+		testCar.moveForward(testMap);
 		assertEquals(testCar.getX(), 1);
 		
 		testCar.setDirection("UP");
-		testCar.moveForward();
+		testCar.moveForward(testMap);
 		assertEquals(testCar.getY(), 0);
 		
 		testCar.setDirection("DOWN");
-		testCar.moveForward();
+		testCar.moveForward(testMap);
 		assertEquals(testCar.getX(), 1);
+		
+		// Make sure it errors on moving off map
+		testCar.setDirection("DOWN");
+		try {
+			testCar.moveForward(testMap);
+			fail();
+		} catch (OffMapException e){
+			assertTrue(true);
+		}
 
 		logger.info("Finished " + name.getMethodName() + " successfully!");	
 	}
@@ -214,7 +228,7 @@ public class CarTests {
 	}
 	
 	@Test
-	public void testStep(){
+	public void testStep() throws OffMapException{
 		RoadMap testMap = new RoadMap();
 		testCar = new Car(0, "UP", 1, 1);
 		
@@ -393,7 +407,7 @@ public class CarTests {
 	}
 
 	@Test
-	public void testHandleSpace(){
+	public void testHandleSpace() throws InvalidStreetExitException {
 		testMap = new RoadMap();
 		testMap.setMap("###\n# #\n###");
 				

@@ -7,6 +7,7 @@ import java.util.logging.Logger;
 import org.junit.*;
 import org.junit.rules.TestName;
 
+import exceptions.InvalidStreetExitException;
 import traffic.*;
 
 public class MapTests {
@@ -172,7 +173,7 @@ public class MapTests {
 	}
 	
 	@Test
-	public void testOutputCharAt(){
+	public void testOutputCharAt() throws InvalidStreetExitException{
 		// Cases with invalid output construction: (returns null character)
 		// Non-space in between exit and output
 		testMap.setMap("#C#\n###\n#@#");
@@ -185,7 +186,13 @@ public class MapTests {
 		assertEquals(testMap.outputCharAt("UP", 1, 7), 0);
 		// Exit isn't surrounded by #
 		testMap.setMap("#C#\n###\n @#");
-		assertEquals(testMap.outputCharAt("UP", 1, 2), 0);
+		// This should throw an InvalidStreetExitException
+		try {
+			testMap.outputCharAt("UP", 1, 2);
+			fail();
+		} catch (InvalidStreetExitException e) {
+			assertTrue(true);
+		}
 		testMap.setMap(" ##\n@ C\n###");
 		assertEquals(testMap.outputCharAt("RIGHT", 0, 1), 0);
 		

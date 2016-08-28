@@ -2,6 +2,8 @@ package traffic;
 
 import java.util.*;
 
+import exceptions.InvalidStreetExitException;
+
 public class RoadMap {
 	
 	private int mapWidth;
@@ -173,17 +175,17 @@ public class RoadMap {
 		return null;
 	}
 	
-	public char outputCharAt(String direction, int x, int y){
+	public char outputCharAt(String direction, int x, int y) throws InvalidStreetExitException{
 		// Find the output character for a street exit at a specific position
 		// If the exit is too close to the edge, return a space (to indicate no output)
 		
-		// TODO: Make sure the street exit has #'s on either side of it or it is invalid (add test case for this as well)
-		
 		if (direction == "UP"){
 			if (y >= 2){
-				if (spaceAt(x-1, y) != '#' || spaceAt(x+1, y) != '#') return 0;
+				if (spaceAt(x-1, y) != '#' || spaceAt(x+1, y) != '#') 
+					throw new InvalidStreetExitException("Street exit at "+x+", "+y+" not surrounded by #");
 				for (int i=y-1; i>=0; i--){
-					if (spaceAt(x, i) != ' ' && i != y-2) return 0;
+					if (spaceAt(x, i) != ' ' && i != y-2)
+						throw new InvalidStreetExitException("Path not clear from street exit at "+x+", "+y);
 				}
 				return spaceAt(x, y-2);
 			} else {
@@ -192,9 +194,11 @@ public class RoadMap {
 		}
 		if (direction == "DOWN"){
 			if (y <= roadMap.length-3){
-				if (spaceAt(x-1, y) != '#' || spaceAt(x+1, y) != '#') return 0;
+				if (spaceAt(x-1, y) != '#' || spaceAt(x+1, y) != '#')
+					throw new InvalidStreetExitException("Street exit at "+x+", "+y+" not surrounded by #");
 				for (int i=y+1; i<roadMap.length; i++){
-					if (spaceAt(x, i) != ' ' && i != y+2) return 0;
+					if (spaceAt(x, i) != ' ' && i != y+2)
+						throw new InvalidStreetExitException("Path not clear from street exit at "+x+", "+y);
 				}
 				return spaceAt(x, y+2);
 			} else {
@@ -203,9 +207,11 @@ public class RoadMap {
 		}
 		if (direction == "LEFT"){
 			if (x >= 2){
-				if (spaceAt(x, y-1) != '#' || spaceAt(x, y+1) != '#') return 0;
+				if (spaceAt(x, y-1) != '#' || spaceAt(x, y+1) != '#')
+					throw new InvalidStreetExitException("Street exit at "+x+", "+y+" not surrounded by #");
 				for (int i=x-1; i>=0; i--){
-					if (spaceAt(i, y) != ' ' && i != x-2) return 0;
+					if (spaceAt(i, y) != ' ' && i != x-2) 
+						throw new InvalidStreetExitException("Path not clear from street exit at "+x+", "+y);
 				}
 				return spaceAt(x-2, y);
 			} else {
@@ -214,9 +220,11 @@ public class RoadMap {
 		}
 		if (direction == "RIGHT"){
 			if (x <= roadMap[0].length()-3){
-				if (spaceAt(x, y-1) != '#' || spaceAt(x, y+1) != '#') return 0;
+				if (spaceAt(x, y-1) != '#' || spaceAt(x, y+1) != '#')
+					throw new InvalidStreetExitException("Street exit at "+x+", "+y+" not surrounded by #");
 				for (int i=x+1; i<roadMap[0].length(); i++){
-					if (spaceAt(i, y) != ' ' && i != x+2) return 0;
+					if (spaceAt(i, y) != ' ' && i != x+2)
+						throw new InvalidStreetExitException("Path not clear from street exit at "+x+", "+y);
 				}
 				return spaceAt(x+2, y);
 			} else {
