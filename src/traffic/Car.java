@@ -108,7 +108,6 @@ public class Car {
 			}
 		}
 		if (otherCar != null){
-			
 			if (operator != 0){
 				performOperation(otherCar.getValue(), map.conditionalPath(x, y));
 				newValueSet = true;
@@ -122,6 +121,7 @@ public class Car {
 			} else {
 				collectingValue = true;
 				tempValue = (long)(currentSpace-48);
+				//System.out.println("Now reading a number: "+tempValue+", operator is "+operator);
 			}
 			if (map.conditionalPath(x, y) != null && !newValueSet && operator != 0){
 				performOperation(tempValue, map.conditionalPath(x, y));
@@ -129,7 +129,7 @@ public class Car {
 			}
 		} else {
 			if (collectingValue){
-
+				//System.out.println("Just stepped off of a number. tempValue="+tempValue+", operator="+(int)operator);
 				if (operator != 0 && !newValueSet){
 					performOperation(tempValue, null);
 					newValueSet = true;
@@ -138,9 +138,9 @@ public class Car {
 				
 				collectingValue = false;
 			}
+			operator = 0;
 		}
 		
-		operator = 0;
 		
 		// Street exits
 		if (currentSpace == '@'){
@@ -185,6 +185,7 @@ public class Car {
 			currentSpace == '-' ||
 			currentSpace == '*' ||
 			currentSpace == '/' ||
+			currentSpace == '%' ||
 			currentSpace == '^' ||
 			currentSpace == '|' ||
 			currentSpace == ':' ||
@@ -194,6 +195,7 @@ public class Car {
 			currentSpace == '>'
 			){
 			operator = currentSpace;
+			//System.out.println("Stepped on "+currentSpace+", new operator is "+operator);
 		}
 		
 		return 0;
@@ -205,15 +207,18 @@ public class Car {
 
 		char topElement;
 		boolean inInt = false;
+		boolean isNegative = false;
 		int newValue = 0;
 		
 		while (!inputStack.isEmpty()){			
 			topElement = inputStack.pop();
 			
-			if (topElement >= '0' && topElement <= '9' ){
+			if (topElement >= '0' && topElement <= '9'){
 				// If a digit was taken, append it to the new value
 				if (!inInt) inInt = true;
 				newValue = (newValue*10) + (int)(topElement-48);
+			} else if (topElement == '-' && !isNegative){
+				isNegative = true;
 			} else {
 				// If a non-digit was taken
 				if (inInt){
@@ -224,6 +229,8 @@ public class Car {
 				}
 			}
 		}
+		
+		if (isNegative) newValue *= -1;
 		
 		if (inInt){
 			this.value = (long)newValue;
@@ -260,7 +267,7 @@ public class Car {
 		// Perform the operation with the temporary value
 		// conditional: if the operation is being performed in a conditional, don't set the value
 		// Returns the result of the operation
-		
+		//System.out.println(value+" "+operator+" "+operationValue);
 		long newValue = 0;
 		
 		switch (operator){
@@ -268,6 +275,7 @@ public class Car {
 		case '-': newValue = value-operationValue; break;
 		case '*': newValue = value*operationValue; break;
 		case '/': newValue = value/operationValue; break;
+		case '%': newValue = value%operationValue; break;
 		case '^': newValue = (long)Math.pow(value, operationValue); break;
 		case ':': newValue = (long)Math.floor(Math.log(value)/Math.log(operationValue)); break;
 		case '=': newValue = value==operationValue?1:0; break;
@@ -285,10 +293,10 @@ public class Car {
 			} else {
 				direction = conditional[1];
 			}
-			tempValue = 0;
 		} else {
 			value = newValue;
 		}
+		tempValue = 0;
 		
 		return 0;
 	}

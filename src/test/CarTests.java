@@ -435,14 +435,14 @@ public class CarTests {
 		testCar.setOperator('+');
 		testCar.setValue(3);
 		testCar.handleSpace(testMap, cars);
-		assertEquals(testCar.getValue(), 36); 
+		assertEquals(testCar.getValue(), 36); // because it was 3 before, plus the 33 tempValue from before
 		assertEquals(testCar.getOperator(), 0);
 		assertEquals(testCar.getTempValue(), 0);
 		
 		// Case on a number with a conditional
 		testMap.setMap("#?#\n#3#\n#!#");
 		testCar.setOperator('=');
-		testCar.setTempValue(0);
+		testCar.setTempValue(3);
 		testCar.setValue(3);
 		testCar.handleSpace(testMap, cars);
 		assertEquals(testCar.getTempValue(), 0);

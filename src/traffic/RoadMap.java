@@ -9,8 +9,8 @@ public class RoadMap {
 	private String[] roadMap;
 	private Stack<Character> inputStack;
 	
-	public RoadMap(String[] roadMap){
-		inputStack = new Stack<Character>();
+	public RoadMap(String[] roadMap, Stack<Character> input){
+		inputStack = input;
 		this.roadMap = roadMap;
 		this.mapWidth = roadMap[0].length();
 		this.mapHeight = roadMap.length;
